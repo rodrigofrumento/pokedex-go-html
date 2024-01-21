@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pokedex</title>
+    </head>
+    <body>
+        <h1>Pokedex Go + HTML</h1>
+        <input type="text" id="pokemonName" placeholder="Busque pelo nome do Pokemon">
+        <button onclick="searchPokemon()">Pesquisar</button>
+        <div id="pokemonInfo"></div>
+
+        <script>
+            function searchPokemon() {
+                const name = document.getElementById("pokemonName").value;
+                fetch(`https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`)
+                .then(response => response.json())
+                .then(data => {
+                    const pokemonInfo = document.getElementById("pokemonInfo")
+                    pokemonInfo.innerHTML = `
+                        <h2>${data.name}</h2>
+                        <img src="${data.sprites.front_default}" alt="${data.name}">
+                        <p>Tipo: ${data.types.map(type => type.type.name).join(', ')}</p>
+                        <p>Peso: ${data.weight}</p>
+                        <p>Altura: ${data.height}</p>
+                    `;
+                })
+                .catch(error => {
+                    console.error(error)
+                    alert("Pokemon não encontrado")
+                })
+            }
+        </script>
+    </body>
+</html>
